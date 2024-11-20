@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Utama</title>
+    <link rel="stylesheet" href="styledashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="../dashboard.html">Home</a>
+        
+        <!-- Dropdown untuk Database -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDatabaseDropdown()">Database
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="databaseDropdown">
+                <a href="Fitur\database\dokter.html">Dokter</a>
+                <a href="Fitur\database\pasien.html">Pasien</a>
+                <a href="Fitur\database\obat.html">Obat</a>
+                <a href="Fitur\database\ruangan.html">Ruangan</a>
+            </div>
+        </div>
+        
+        <!-- Dropdown untuk Kegiatan -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleKegiatanDropdown()">Kegiatan
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="kegiatanDropdown">
+                <a href="Fitur\kegiatan\pembayaran.html">Pembayaran</a>
+            </div>
+        </div>
+        <a href="../about.html">About</a>
+    </div>
+
+    <script>
+        // Toggle untuk dropdown Database
+        function toggleDatabaseDropdown() {
+            document.getElementById("databaseDropdown").classList.toggle("show");
+            // Close the Kegiatan dropdown jika terbuka
+            var kegiatanDropdown = document.getElementById("kegiatanDropdown");
+            if (kegiatanDropdown.classList.contains('show')) {
+                kegiatanDropdown.classList.remove('show');
+            }
+        }
+
+        // Toggle untuk dropdown Kegiatan
+        function toggleKegiatanDropdown() {
+            document.getElementById("kegiatanDropdown").classList.toggle("show");
+            // Close the Database dropdown jika terbuka
+            var databaseDropdown = document.getElementById("databaseDropdown");
+            if (databaseDropdown.classList.contains('show')) {
+                databaseDropdown.classList.remove('show');
+            }
+        }
+        
+        // Close dropdown jika klik di luar
+        window.onclick = function(e) {
+            if (!e.target.matches('.dropbtn')) {
+                var databaseDropdown = document.getElementById("databaseDropdown");
+                var kegiatanDropdown = document.getElementById("kegiatanDropdown");
+                if (databaseDropdown.classList.contains('show')) {
+                    databaseDropdown.classList.remove('show');
+                }
+                if (kegiatanDropdown.classList.contains('show')) {
+                    kegiatanDropdown.classList.remove('show');
+                }
+            }
+        }
+    </script>
+    <div class="body-text">
+        <div class="title">Selamat Datang di</div>
+        <div class="sub-title">Sistem Informasi Rumah Sakit</div>
+      </div>
+</body>
+</html>

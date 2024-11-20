@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Utama</title>
+    <link rel="stylesheet" href="stylepasien.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="../../dashboard.html">Home</a>
+
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDatabaseDropdown()">Database
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="databaseDropdown">
+                <a href="dokter.html">Dokter</a>
+                <a href="pasien.html">Pasien</a>
+                <a href="obat.html">Obat</a>
+                <a href="ruangan.html">Ruangan</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleKegiatanDropdown()">Kegiatan
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="kegiatanDropdown">
+                <a href="../kegiatan/pembayaran.html">Pembayaran</a>
+            </div>
+        </div>
+        <a href="../../about.html">About</a>
+    </div>
+
+    <div class="container custom-container">
+        <h2 class="mb-4">Data pasien</h2>
+        <a href="#addModal" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Tambah pasien
+        </a>
+        <div class="table-container">
+            <table class="custom-table" id="pasienTable">
+                <thead>
+                    <tr>
+                        <th>Kode Perawatan</th>
+                        <th>Nama</th>
+                        <th>jenis Kelamin</th>
+                        <th>Alamat</th>
+                        <th>Nama Dokter</th>
+                        <th>Nama Obat</th>
+                        <th>Diagnosa</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="pasienTableBody">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal Tambah pasien -->
+        <div id="addModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah pasien</h5>
+                        <a href="#" class="modal-close">&times;</a>
+                    </div>
+                    <form action="databasePasien.php" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nama" class="form-label">Nama pasien</label>
+                                <input type="text" class="form-control" id="nama" name="nama" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jenisKelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-control" id="jenisKelamin" name="jenisKelamin" required>
+                                    <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                    <option value="laki-laki">Laki-Laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="alamat" class="form-label">Alamat</label>
+                                <input type="text" class="form-control" id="alamat" name="alamat" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="namaDokter" class="form-label">Nama Dokter</label>
+                                <input type="text" class="form-control" id="namaDokter" name="namaDokter" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="namaObat" class="form-label">Nama Obat</label>
+                                <input type="text" class="form-control" id="namaObat" name="namaObat" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="diagnosa" class="form-label">Diagnosa</label>
+                                <input type="text" class="form-control" id="diagnosa" name="diagnosa" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="action" value="add" class="btn btn-primary">Simpan</button>
+                            <a href="#" class="btn btn-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit pasien -->
+        <div id="editModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit pasien</h5>
+                        <a href="#" class="modal-close">&times;</a>
+                    </div>
+                    <form id="editpasienForm" action="databasePasien.php" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <input type="hidden" id="editnomorpasien" name="kodePerawatan">
+                            <div class="mb-3">
+                                <label for="editnama" class="form-label">Nama pasien</label>
+                                <input type="text" class="form-control" id="editnama" name="nama" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jenisKelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-control" id="jenisKelamin" name="jenisKelamin" required>
+                                    <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                    <option value="laki-laki">Laki-Laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
+                            <div class="mb-3">
+                                <label for="editalamat" class="form-label">Alamat</label>
+                                <input type="text" class="form-control" id="editalamat" name="alamat" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editnamaDokter" class="form-label">Nama Dokter</label>
+                                <input type="text" class="form-control" id="editnamaDokter" name="namaDokter" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editnamaObat" class="form-label">Nama Obat</label>
+                                <input type="text" class="form-control" id="editnamaObat" name="namaObat" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editdiagnosa" class="form-label">Diagnosa</label>
+                                <input type="text" class="form-control" id="editdiagnosa" name="diagnosa" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="action" value="edit" class="btn btn-primary">Update</button>
+                            <a href="#" class="btn btn-primary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Delete pasien -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus pasien</h5>
+                        <a href="#" class="modal-close">&times;</a>
+                    </div>
+                    <form action="databasePasien.php" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" id="deleteId" name="kodePerawatan">
+                            <p>Apakah Anda yakin ingin menghapus pasien ini?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="action" value="delete" class="btn btn-danger">Hapus</button>
+                            <a href="#" class="btn btn-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Fungsi untuk mengambil data pasien
+        function fetchpasienData() {
+            fetch('databasePasien.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const pasienTableBody = document.getElementById('pasienTableBody');
+                    pasienTableBody.innerHTML = '';
+                    
+                    data.forEach(pasien => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${pasien.kodePerawatan}</td>
+                            <td>${pasien.nama}</td>
+                            <td>${pasien.jenisKelamin}</td>
+                            <td>${pasien.alamat}</td>
+                            <td>${pasien.namaDokter}</td>
+                            <td>${pasien.namaObat}</td>
+                            <td>${pasien.diagnosa}</td>
+                            <td class='action-buttons'>
+                                <a href='#editModal' class='btn-edit' onclick='openEditModal(${JSON.stringify(pasien)})'><i class='fas fa-edit'></i></a>
+                                <a href='#deleteModal' class='btn-delete' onclick='openDeleteModal(${pasien.kodePerawatan})'><i class='fas fa-trash'></i></a>
+                            </td>
+                        `;
+                        pasienTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Terjadi kesalahan saat mengambil data.');
+                });
+        }
+    
+        // Fungsi untuk mengisi modal edit
+        function openEditModal(pasien) {
+            document.getElementById('editnomorpasien').value = pasien.kodePerawatan;
+            document.getElementById('editnama').value = pasien.nama;
+            document.getElementById('editjenisKelamin').value = pasien.jenisKelamin;
+            document.getElementById('editalamat').value = pasien.alamat;
+            document.getElementById('editnamaDokter').value = pasien.namaDokter;
+            document.getElementById('editnamaObat').value = pasien.namaObat;
+            document.getElementById('editdiagnosa').value = pasien.diagnosa;
+        }
+    
+        // Fungsi untuk mengisi modal delete
+        function openDeleteModal(kodePerawatan) {
+            document.getElementById('deleteId').value = kodePerawatan; // Pastikan ID ini sesuai
+        }
+
+        // Fungsi dropdown
+        function toggleDatabaseDropdown() {
+            document.getElementById("databaseDropdown").classList.toggle("show");
+            var kegiatanDropdown = document.getElementById("kegiatanDropdown");
+            if (kegiatanDropdown.classList.contains('show')) {
+                kegiatanDropdown.classList.remove('show');
+            }
+        }
+
+        function toggleKegiatanDropdown() {
+            document.getElementById("kegiatanDropdown").classList.toggle("show");
+            var databaseDropdown = document.getElementById("databaseDropdown");
+            if (databaseDropdown.classList.contains('show')) {
+                databaseDropdown.classList.remove('show');
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(e) {
+            if (!e.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var d of dropdowns) {
+                    if (d.classList.contains('show')) {
+                        d.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', fetchpasienData);
+    </script>
+</body>
+</html>

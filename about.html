@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Utama</title>
+    <link rel="stylesheet" href="styleabout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="../dashboard.html">Home</a>
+        
+        <!-- Dropdown untuk Database -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDatabaseDropdown()">Database
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="databaseDropdown">
+                <a href="Fitur\database\dokter.html">Dokter</a>
+                <a href="Fitur\database\pasien.html">Pasien</a>
+                <a href="Fitur\database\obat.html">Obat</a>
+                <a href="Fitur\database\ruangan.html">Ruangan</a>
+            </div>
+        </div>
+        
+        <!-- Dropdown untuk Kegiatan -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleKegiatanDropdown()">Kegiatan
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="kegiatanDropdown">
+                <a href="Fitur\kegiatan\pembayaran.html">Pembayaran</a>
+            </div>
+        </div>
+        <a href="#about.html">About</a>
+    </div>
+
+    <script>
+        // Toggle untuk dropdown Database
+        function toggleDatabaseDropdown() {
+            document.getElementById("databaseDropdown").classList.toggle("show");
+            // Close the Kegiatan dropdown jika terbuka
+            var kegiatanDropdown = document.getElementById("kegiatanDropdown");
+            if (kegiatanDropdown.classList.contains('show')) {
+                kegiatanDropdown.classList.remove('show');
+            }
+        }
+
+        // Toggle untuk dropdown Kegiatan
+        function toggleKegiatanDropdown() {
+            document.getElementById("kegiatanDropdown").classList.toggle("show");
+            // Close the Database dropdown jika terbuka
+            var databaseDropdown = document.getElementById("databaseDropdown");
+            if (databaseDropdown.classList.contains('show')) {
+                databaseDropdown.classList.remove('show');
+            }
+        }
+        
+        // Close dropdown jika klik di luar
+        window.onclick = function(e) {
+            if (!e.target.matches('.dropbtn')) {
+                var databaseDropdown = document.getElementById("databaseDropdown");
+                var kegiatanDropdown = document.getElementById("kegiatanDropdown");
+                if (databaseDropdown.classList.contains('show')) {
+                    databaseDropdown.classList.remove('show');
+                }
+                if (kegiatanDropdown.classList.contains('show')) {
+                    kegiatanDropdown.classList.remove('show');
+                }
+            }
+        }
+    </script>
+    <div class="about-content">
+        <h1>Sistem Informasi Rumah Sakit Terpadu</h1>
+        
+        <section class="system-description">
+            <p>Sistem Informasi Rumah Sakit kami dirancang untuk menghadirkan solusi komprehensif yang mengintegrasikan seluruh aspek pelayanan kesehatan secara efisien dan modern. Dengan teknologi canggih, kami mengoptimalkan manajemen rumah sakit untuk meningkatkan kualitas pelayanan pasien.</p>
+        </section>
+    
+        <section class="key-features">
+            <h2>Fitur Unggulan</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Manajemen Data Dokter</h3>
+                    <p>Pengelolaan profil dan jadwal dokter secara terstruktur dan akurat.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-procedures"></i>
+                    <h3>Rekam Medis Pasien</h3>
+                    <p>Sistem pencatatan dan penelusuran riwayat kesehatan pasien yang aman dan terpercaya.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-pills"></i>
+                    <h3>Inventori Obat</h3>
+                    <p>Kontrol stok dan distribusi obat yang tepat dan efisien.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-building"></i>
+                    <h3>Manajemen Ruangan</h3>
+                    <p>Pengaturan dan pemantauan ketersediaan ruangan rumah sakit dengan cepat dan akurat.</p>
+                </div>
+            </div>
+        </section>
+    
+        <section class="mission-statement">
+            <h2>Misi Kami</h2>
+            <p>Memberikan pelayanan kesehatan berkualitas tinggi melalui teknologi informasi yang inovatif, memudahkan tenaga medis, dan meningkatkan pengalaman pasien.</p>
+        </section>
+    </div>
+</body>
+</html>

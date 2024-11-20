@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pembayaran</title>
+    <link rel="stylesheet" href="stylepembayaran.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="../../dashboard.html">Home</a>
+
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDatabaseDropdown()">Database
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="databaseDropdown">
+                <a href="../database/dokter.html">Dokter</a>
+                <a href="../database/pasien.html">Pasien</a>
+                <a href="../database/obat.html">Obat</a>
+                <a href="../database/Ruang.html">Ruang</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleKegiatanDropdown()">Kegiatan
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="kegiatanDropdown">
+                <a href="../kegiatan/pembayaran.html">Pembayaran</a>
+            </div>
+        </div>
+        <a href="../../about.html">About</a>
+    </div>
+    <div class="container custom-container">
+        <h2 class="mb-4">Data Pembayaran</h2>
+        <a href="#addModal" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Tambah Pembayaran
+        </a>
+        <div class="table-container">
+            <table class="custom-table" id="pembayaranTable">
+                <thead>
+                    <tr>
+                        <th>Kode Pembayaran</th>
+                        <th>Status Pembayaran</th>
+                        <th>Total Biaya</th>
+                        <th>Tanggal Pembayaran</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="pembayaranTableBody">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal Tambah Pembayaran -->
+        <div id="addModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Pembayaran</h5>
+                        <a href="#" class="modal-close">&times;</a>
+                    </div>
+                    <form id="addPembayaranForm" action="databasepembayaran.php" method="POST">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="statusPembayaran" class="form-label">Status Pembayaran</label>
+                                <select class="form-control" id="statusPembayaran" name="statusPembayaran" required>
+                                    <option value="" disabled selected>Pilih Status Pembayaran</option>
+                                    <option value="Belum dibayar">Belum dibayar</option>
+                                    <option value="Sudah dibayar">Sudah dibayar</option>
+                                    <option value="Sedang dalam proses">Sedang dalam proses</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="totalBiaya" class="form-label">Total Biaya</label>
+                                <input type="number" class="form-control" id="totalBiaya" name="totalBiaya" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tanggalPembayaran" class="form-label">Tanggal Pembayaran</label>
+                                <input type="date" class="form-control" id="tanggalPembayaran" name="tanggalPembayaran" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="action" value="add">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <a href="#" class="btn btn-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit Pembayaran -->
+        <div id="editModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Pembayaran</h5>
+                        <a href="#" class="modal-close">&times;</a>
+                    </div>
+                    <form id="editPembayaranForm" action="databasepembayaran.php" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" id="editKodePembayaran" name="kodePembayaran">
+                            <div class="mb-3">
+                                <label for="statusPembayaran" class="form-label">Status Pembayaran</label>
+                                <select class="form-control" id="statusPembayaran" name="statusPembayaran" required>
+                                    <option value="" disabled selected>Pilih Status Pembayaran</option>
+                                    <option value="Belum dibayar">Belum dibayar</option>
+                                    <option value="Sudah dibayar">Sudah dibayar</option>
+                                    <option value="Sedang dalam proses">Sedang dalam proses</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTotalBiaya" class="form-label">Total Biaya</label>
+                                <input type="number" class="form-control" id="editTotalBiaya" name="totalBiaya" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTanggalPembayaran" class="form-label">Tanggal Pembayaran</label>
+                                <input type="date" class="form-control" id="editTanggalPembayaran" name="tanggalPembayaran" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="action" value="edit">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <a href="#" class="btn btn-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Delete Pembayaran -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus Pembayaran</h5>
+                        <a href="#" class="modal-close">&times;</a>
+                    </div>
+                    <form id="deletePembayaranForm" action="databasepembayaran.php" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" id="deleteKodePembayaran" name="kodePembayaran">
+                            <p>Apakah Anda yakin ingin menghapus pembayaran ini?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="action" value="delete">
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                            <a href="#" class="btn btn-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Fungsi untuk mengambil data pembayaran
+        function fetchPembayaranData() {
+            fetch('databasepembayaran.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const pembayaranTableBody = document.getElementById('pembayaranTableBody');
+                    pembayaranTableBody.innerHTML = '';
+                    
+                    data.forEach(pembayaran => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${pembayaran.KodePembayaran}</td>
+                            <td>${pembayaran.statusPembayaran}</td>
+                            <td>${pembayaran.totalBiaya}</td>
+                            <td>${pembayaran.tanggalPembayaran}</td>
+                            <td class='action-buttons'>
+                                <a href='#editModal' class='btn-edit' onclick='openEditModal(${JSON.stringify(pembayaran).replace(/"/g, "&quot;")})'><i class='fas fa-edit'></i></a>
+                                <a href='#deleteModal' class='btn-delete' onclick='openDeleteModal(${pembayaran.KodePembayaran})'><i class='fas fa-trash'></i></a>
+                            </td>
+                        `;
+                        pembayaranTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Terjadi kesalahan saat mengambil data.');
+                });
+        }
+    
+        // Fungsi untuk mengisi modal edit
+        function openEditModal(pembayaran) {
+            document.getElementById('editKodePembayaran').value = pembayaran.KodePembayaran;
+            document.getElementById('editStatusPembayaran').value = pembayaran.statusPembayaran;
+            document.getElementById('editTotalBiaya').value = pembayaran.totalBiaya;
+            document.getElementById('editTanggalPembayaran').value = pembayaran.tanggalPembayaran;
+        }
+    
+        // Fungsi untuk mengisi modal delete
+        function openDeleteModal(kodePembayaran) {
+            document.getElementById('deleteKodePembayaran').value = kodePembayaran;
+        }
+
+          // Fungsi dropdown
+          function toggleDatabaseDropdown() {
+            document.getElementById("databaseDropdown").classList.toggle("show");
+            var kegiatanDropdown = document.getElementById("kegiatanDropdown");
+            if (kegiatanDropdown.classList.contains('show')) {
+                kegiatanDropdown.classList.remove('show');
+            }
+        }
+
+        function toggleKegiatanDropdown() {
+            document.getElementById("kegiatanDropdown").classList.toggle("show");
+            var databaseDropdown = document.getElementById("databaseDropdown");
+            if (databaseDropdown.classList.contains('show')) {
+                databaseDropdown.classList.remove('show');
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(e) {
+            if (!e.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var d of dropdowns) {
+                    if (d.classList.contains('show')) {
+                        d.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', fetchPembayaranData);
+    </script>
+</body>
+</html>
